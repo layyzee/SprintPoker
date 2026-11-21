@@ -24,6 +24,14 @@ export default function CardDeckSelector({
     }
   };
 
+  const handleMouseMove = (e) => {
+    const rect = e.currentTarget.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+    e.currentTarget.style.setProperty('--mouse-x', `${x}px`);
+    e.currentTarget.style.setProperty('--mouse-y', `${y}px`);
+  };
+
   return (
     <footer className="w-full shrink-0 bg-slate-950/90 backdrop-blur-xl border-t border-white/[0.08] px-4 py-3 z-20">
       <div className="max-w-6xl mx-auto flex flex-col items-center gap-2">
@@ -64,8 +72,9 @@ export default function CardDeckSelector({
               <button
                 key={card}
                 onClick={() => handleCardClick(card)}
+                onMouseMove={handleMouseMove}
                 disabled={disabled}
-                className={`group relative flex flex-col items-center justify-center shrink-0 rounded-2xl transition-all duration-200 select-none ${
+                className={`group relative card-spotlight flex flex-col items-center justify-center shrink-0 rounded-2xl transition-all duration-200 select-none ${
                   isSelected
                     ? '-translate-y-3 scale-110 bg-gradient-to-b from-amber-200 via-amber-300 to-amber-400 text-slate-950 font-black shadow-[0_12px_28px_rgba(245,158,11,0.4)] border-2 border-white ring-4 ring-amber-400/30'
                     : 'bg-gradient-to-b from-slate-800 to-slate-900/90 text-slate-200 border border-white/10 hover:border-amber-400/50 hover:bg-slate-750 hover:-translate-y-1.5 shadow-md shadow-black/40'

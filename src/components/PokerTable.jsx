@@ -61,27 +61,36 @@ export default function PokerTable({
                 style={{ left: `${left}%`, top: `${top}%` }}
                 className="absolute -translate-x-1/2 -translate-y-1/2 pointer-events-auto flex flex-col items-center gap-1.5 z-20 group transition-all"
               >
-                {/* Playing Card */}
+                {/* Playing Card with 3D Flip */}
                 <div className="transition-transform group-hover:scale-110">
                   {!player.hasVoted ? (
                     // Not Voted State
                     <div className="w-10 h-14 sm:w-12 sm:h-16 rounded-xl border-2 border-dashed border-white/20 bg-black/20 backdrop-blur-xs flex items-center justify-center text-slate-500 text-xs shadow-inner">
                       <span className="text-xs opacity-60">🤔</span>
                     </div>
-                  ) : !areCardsRevealed ? (
-                    // Face-Down Card (Voted)
-                    <div className="w-10 h-14 sm:w-12 sm:h-16 rounded-xl bg-gradient-to-br from-indigo-700 via-indigo-800 to-blue-900 border border-indigo-400/50 shadow-lg shadow-indigo-900/50 flex items-center justify-center relative overflow-hidden animate-pop">
-                      <div className="absolute inset-1 rounded-lg border border-indigo-300/30 flex items-center justify-center">
-                        <span className="text-xs font-mono text-indigo-200/80 font-bold">🂠</span>
-                      </div>
-                    </div>
                   ) : (
-                    // Face-Up Card (Revealed)
-                    <div className="w-11 h-16 sm:w-14 sm:h-20 rounded-xl bg-gradient-to-b from-white to-slate-100 border-2 border-amber-300 shadow-xl flex flex-col items-center justify-center text-slate-900 font-extrabold animate-pop">
-                      <span className="text-lg sm:text-2xl font-mono text-slate-900 leading-none">
-                        {player.vote}
-                      </span>
-                      <span className="text-[9px] text-slate-500 font-sans font-bold mt-0.5">pts</span>
+                    // 3D Flipping Card Container
+                    <div className="perspective-1000 w-10 h-14 sm:w-12 sm:h-16">
+                      <div
+                        className={`w-full h-full relative transform-style-3d card-flip-transition ${
+                          areCardsRevealed ? 'rotate-y-180' : ''
+                        }`}
+                      >
+                        {/* Face-Down Card (Shown before reveal) */}
+                        <div className="absolute inset-0 backface-hidden rounded-xl bg-gradient-to-br from-indigo-700 via-indigo-800 to-blue-900 border border-indigo-400/50 shadow-lg shadow-indigo-900/50 flex items-center justify-center overflow-hidden">
+                          <div className="absolute inset-1 rounded-lg border border-indigo-300/30 flex items-center justify-center">
+                            <span className="text-xs font-mono text-indigo-200/80 font-bold">🂠</span>
+                          </div>
+                        </div>
+
+                        {/* Face-Up Card (Revealed on 3D flip) */}
+                        <div className="absolute inset-0 backface-hidden rotate-y-180 rounded-xl bg-gradient-to-b from-white via-slate-50 to-slate-100 border-2 border-amber-300 shadow-xl shadow-amber-400/20 flex flex-col items-center justify-center text-slate-900 font-extrabold">
+                          <span className="text-lg sm:text-2xl font-mono text-slate-900 leading-none">
+                            {player.vote}
+                          </span>
+                          <span className="text-[8px] sm:text-[9px] text-amber-700 font-sans font-bold uppercase tracking-wider mt-0.5">pts</span>
+                        </div>
+                      </div>
                     </div>
                   )}
                 </div>
